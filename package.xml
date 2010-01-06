@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package packagerversion="1.4.6" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0 http://pear.php.net/dtd/tasks-1.0.xsd http://pear.php.net/dtd/package-2.0 http://pear.php.net/dtd/package-2.0.xsd">
+ <name>dcPropelReportsPlugin</name>
+ <channel>pear.symfony-project.com</channel>
+ <summary>Easy generate SQL Reports in a Query By Example way</summary> 
+<description>
+This plugin provides a custom generation of reports in a graphical fashion, 
+allowing end users to build ang get their custom reports.
+
+Report creation is done by a Query by Example way, and some restrictions are 
+imposed, but it seems to be very useful in many scenarios.
+</description>
+ <lead>
+  <name>Juan Pablo Perez</name>
+  <user>p.juanpablo</user>
+  <email>jpablop@cespi.unlp.edu.ar</email>
+  <active>yes</active>
+ </lead>
+ <lead>
+  <name>Christian A. Rodriguez</name>
+  <user>chrodriguez</user>
+  <email>car@cespi.unlp.edu.ar</email>
+  <active>yes</active>
+ </lead>
+ <date>2010-01-06</date>
+ <time>16:30:00</time>
+ <version>
+  <release>0.1.0</release>
+  <api>1.2.0</api>
+ </version>
+ <stability>
+  <release>beta</release>
+  <api>beta</api>
+ </stability>
+ <license uri="http://www.symfony-project.org/license">MIT license</license>
+ <notes>-</notes>
+ <contents>
+  <dir name="/">
+   <file role="data" name="README" />
+   <file role="data" name="LICENSE" />
+   <file role="data" name="TODO" />
+   <dir name="config">
+    <file role="data" name="config.php" />
+    <file role="data" name="routing.yml" />
+    <file role="data" name="schema.yml" />
+   </dir>
+   <dir name="lib">
+    <dir name="filter">
+      <file role="data" name="dcPropelReportFilter.class.php" />
+      <file role="data" name="dcReportCriteriaFormFilter.class.php" />
+      <file role="data" name="dcReportFieldFormFilter.class.php" />
+      <file role="data" name="dcReportFilterFormFilter.class.php" />
+      <file role="data" name="dcReportGroupCriteriaFormFilter.class.php" />
+      <file role="data" name="dcReportQueryFormFilter.class.php" />
+      <file role="data" name="dcReportRelationFormFilter.class.php" />
+      <file role="data" name="dcReportTableFormFilter.class.php" />
+    </dir>
+    <dir name="form">
+      <file role="data" name="dcReportCriteriaForm.class.php" />
+      <file role="data" name="dcReportFieldForm.class.php" />
+      <file role="data" name="dcReportFilterForm.class.php" />
+      <file role="data" name="dcReportGroupCriteriaForm.class.php" />
+      <file role="data" name="dcReportQueryForm.class.php" />
+      <file role="data" name="dcReportRelationForm.class.php" />
+      <file role="data" name="dcReportTableForm.class.php" />
+    </dir>
+    <dir name="model">
+      <file role="data" name="dcReportCriteriaPeer.php" />
+      <file role="data" name="dcReportCriteria.php" />
+      <file role="data" name="dcReportFieldPeer.php" />
+      <file role="data" name="dcReportField.php" />
+      <file role="data" name="dcReportFilterPeer.php" />
+      <file role="data" name="dcReportFilter.php" />
+      <file role="data" name="dcReportGroupCriteriaPeer.php" />
+      <file role="data" name="dcReportGroupCriteria.php" />
+      <file role="data" name="dcReportQueryPeer.php" />
+      <file role="data" name="dcReportQuery.php" />
+      <file role="data" name="dcReportRelationPeer.php" />
+      <file role="data" name="dcReportRelation.php" />
+      <file role="data" name="dcReportTablePeer.php" />
+      <file role="data" name="dcReportTable.php" />
+    </dir>
+    <dir name="pager">
+      <file role="data" name="dcPropelReportPager.class.php" />
+    </dir>
+    <dir name="reflector">
+      <file role="data" name="dcPropelReflector.class.php" />
+    </dir>
+    <dir name="validator">
+      <file role="data" name="dcValidatorNumberRange.class.php" />
+    </dir>
+    <dir name="widget">
+      <file role="data" name="dcWidgetFormFilterNumber.class.php" />
+      <file role="data" name="dcWidgetFormNumberRange.class.php" />
+    </dir>
+    <file role="data" name="dcPropelReportPeer.class.php" />
+    <file role="data" name="dcPropelReportQueryListerner.class.php" />
+   </dir>
+   <dir name="modules">
+    <file role="data" name="dc_report_public/config/generator.yml" />
+    <file role="data" name="dc_report_public/templates/_list_td_actions.php" />
+    <file role="data" name="dc_report_public/templates/_assets.php" />
+    <file role="data" name="dc_report_public/actions/actions.class.php" />
+    <file role="data" name="dc_report_public/lib/dc_report_publicGeneratorConfiguration.class.php" />
+    <file role="data" name="dc_report_public/lib/dc_report_publicGeneratorHelper.class.php" />
+    <file role="data" name="dc_report_filter/config/generator.yml" />
+    <file role="data" name="dc_report_filter/templates/_table_name.php" />
+    <file role="data" name="dc_report_filter/templates/typeChangeSuccess.php" />
+    <file role="data" name="dc_report_filter/actions/actions.class.php" />
+    <file role="data" name="dc_report_filter/lib/dc_report_filterGeneratorHelper.class.php" />
+    <file role="data" name="dc_report_filter/lib/dc_report_filterGeneratorConfiguration.class.php" />
+    <file role="data" name="dc_report_list/templates/_result_th.php" />
+    <file role="data" name="dc_report_list/templates/_result.php" />
+    <file role="data" name="dc_report_list/templates/_filters.php" />
+    <file role="data" name="dc_report_list/templates/exportToExcelError.php" />
+    <file role="data" name="dc_report_list/templates/_result_row.php" />
+    <file role="data" name="dc_report_list/templates/exportToExcelSuccess.php" />
+    <file role="data" name="dc_report_list/templates/_export_to_excel.php" />
+    <file role="data" name="dc_report_list/templates/_result_pagination.php" />
+    <file role="data" name="dc_report_list/templates/indexError.php" />
+    <file role="data" name="dc_report_list/templates/indexSuccess.php" />
+    <file role="data" name="dc_report_list/actions/actions.class.php" />
+    <file role="data" name="dc_report_field/config/generator.yml" />
+    <file role="data" name="dc_report_field/templates/_column.php" />
+    <file role="data" name="dc_report_field/templates/tableChangeSuccess.php" />
+    <file role="data" name="dc_report_field/actions/actions.class.php" />
+    <file role="data" name="dc_report_field/lib/dc_report_fieldGeneratorConfiguration.class.php" />
+    <file role="data" name="dc_report_field/lib/dc_report_fieldGeneratorHelper.class.php" />
+    <file role="data" name="dc_report_condition/templates/_conditions.php" />
+    <file role="data" name="dc_report_condition/templates/_report_criterias.php" />
+    <file role="data" name="dc_report_condition/templates/_group_criteria.php" />
+    <file role="data" name="dc_report_condition/templates/indexSuccess.php" />
+    <file role="data" name="dc_report_condition/actions/actions.class.php" />
+    <file role="data" name="dc_report_query/config/generator.yml" />
+    <file role="data" name="dc_report_query/templates/showSuccess.php" />
+    <file role="data" name="dc_report_query/templates/_list_td_actions.php" />
+    <file role="data" name="dc_report_query/templates/_assets.php" />
+    <file role="data" name="dc_report_query/templates/_publish.php" />
+    <file role="data" name="dc_report_query/actions/actions.class.php" />
+    <file role="data" name="dc_report_query/lib/dc_report_queryGeneratorHelper.class.php" />
+    <file role="data" name="dc_report_query/lib/dc_report_queryGeneratorConfiguration.class.php" />
+    <file role="data" name="dc_report_table/config/generator.yml" />
+    <file role="data" name="dc_report_table/templates/_leftTableName.php" />
+    <file role="data" name="dc_report_table/templates/_list.php" />
+    <file role="data" name="dc_report_table/templates/_relation.php" />
+    <file role="data" name="dc_report_table/templates/indexSuccess.php" />
+    <file role="data" name="dc_report_table/actions/actions.class.php" />
+    <file role="data" name="dc_report_table/lib/dc_report_tableGeneratorConfiguration.class.php" />
+    <file role="data" name="dc_report_table/lib/dc_report_tableGeneratorHelper.class.php" />
+   </dir>
+   <dir name="web">
+    <file role="data" name="css/condition.css" />
+    <file role="data" name="css/default.css" />
+    <file role="data" name="js/dc_propel_table.js" />
+    <file role="data" name="images/report_criteria_delete.png" />
+    <file role="data" name="images/publish.png" />
+    <file role="data" name="images/table.png" />
+    <file role="data" name="images/column.png" />
+    <file role="data" name="images/group_criteria_add.png" />
+    <file role="data" name="images/filter.png" />
+    <file role="data" name="images/condition.png" />
+    <file role="data" name="images/excel.png" />
+    <file role="data" name="images/group_criteria_delete.png" />
+    <file role="data" name="images/unpublish.png" />
+    <file role="data" name="images/report_criteria_add.png" />
+   </dir>
+  </dir>
+ </contents>
+ <dependencies>
+  <required>
+   <php>
+    <min>5.1.0</min>
+   </php>
+   <pearinstaller>
+    <min>1.4.1</min>
+   </pearinstaller>
+   <package>
+    <name>symfony</name>
+    <channel>pear.symfony-project.com</channel>
+    <min>1.2.0</min>
+    <max>1.2.999</max>
+    <exclude>1.0.0</exclude>
+    <exclude>1.1.0</exclude>
+   </package>
+  </required>
+ </dependencies>
+ <phprelease />
+ <changelog>
+  <release>
+    <version>
+      <release>0.1.0</release>
+      <api>1.2.0</api>
+    </version>
+    <stability>
+     <release>beta</release>
+     <api>beta</api>
+    </stability>
+    <license uri="http://www.symfony-project.org/license">MIT license</license>
+    <date>2010-01-06</date>
+    <license>MIT</license>
+    <notes>
+      * First version
+    </notes>
+  </release>
+ </changelog>
+</package>

@@ -1,0 +1,34 @@
+generator:
+  class: sfPropelGenerator
+  param:
+    model_class:           dcReportQuery
+    theme:                 admin
+    non_verbose_templates: true
+    with_show:             true
+    singular:              ~
+    plural:                ~
+    route_prefix:          dc_report_public
+    with_propel_route:     1
+
+    config:
+      actions: ~
+      fields:  ~
+      list:    
+        title: Published Reports
+        layout:  stacked
+        display: [name]
+        params:  |
+          %%name%% <div class="dc_propel_reports_description">%%description%%</div>
+        batch_actions: {}
+        object_actions: ~ 
+        actions:  []
+      filter:  
+        display:            [name, description]
+      form:
+        display: [] 
+      edit:    
+        title: Not Enabled
+        display: []
+      new:     
+        title: Not Enabled
+        display: []

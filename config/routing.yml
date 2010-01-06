@@ -1,0 +1,56 @@
+dc_report_list_excel:
+  url: /dc_report_list/:name/excel
+  param: { module: dc_report_list, action: exportToExcel }
+
+dc_report_list_filter:
+  url: /dc_report_list/:name/filter
+  param: { module: dc_report_list, action: filter }
+
+dc_report_list:
+  url: /dc_report_list/:name
+  param: { module: dc_report_list, action: index }
+
+dc_report_table:
+  class: sfPropelRouteCollection
+  options:
+    model:                dcReportTable
+    module:               dc_report_table
+    prefix_path:          dc_report_table
+    column:               id
+    with_wildcard_routes: true
+
+dc_report_field:
+  class: sfPropelRouteCollection
+  options:
+    model:                dcReportField
+    module:               dc_report_field
+    prefix_path:          dc_report_field
+    column:               id
+    with_wildcard_routes: true
+
+dc_report_query:
+  class: sfPropelRouteCollection
+  options:
+    model:                dcReportQuery
+    module:               dc_report_query
+    prefix_path:          dc_report_query
+    column:               id
+    with_wildcard_routes: true
+
+dc_report_public:
+  class: sfPropelRouteCollection
+  options:
+    model:                dcReportQuery
+    module:               dc_report_public
+    prefix_path:          dc_report_public
+    column:               id
+    with_wildcard_routes: true
+
+dc_report_filter:
+  class: sfPropelRouteCollection
+  options:
+    model:                dcReportFilter
+    module:               dc_report_filter
+    prefix_path:          dc_report_filter
+    column:               id
+    with_wildcard_routes: true

@@ -1,0 +1,5 @@
+* Credentials for accessing dc_report_list individual for each dc_report_query
+* Export to other formats
+* Check restricted actions under (un)publish states:
+  - dc_report_list: only when published
+  - Every action that may alter query, can be done only in unpublished state

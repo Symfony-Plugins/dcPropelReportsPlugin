@@ -1,0 +1,118 @@
+#conditions_toolbar
+{
+  border-style: solid solid none;
+  border-color: #DDDDDD #DDDDDD -moz-use-text-color;
+  border-width: 1px 1px 0;
+  background-color: #CCCCFF;
+  padding: 0.3em;
+}
+
+#conditions_toolbar a
+{
+  padding-right: 5px;
+  border-right: 2px solid #eee;
+  margin-right: 1em;
+}
+
+#conditions_toolbar a:hover,
+#conditions_container .condition_group_toolbar a:hover
+{
+  text-decoration: none;
+}
+
+#conditions_toolbar .help,
+#conditions_container .condition_group_toolbar .help
+{
+  padding: 0px !important;
+  font-size: 0.9em !important; 
+  color: #fff !important;
+  font-weight: bolder;
+}
+
+#conditions_container
+{
+  border-style: solid solid none;
+  border-color: #DDDDDD #DDDDDD -moz-use-text-color;
+  border-width: 1px 1px 0;
+  background-color: #fff;
+  padding: 3px;
+  overflow: auto;
+}
+
+#conditions_container .condition_group
+{
+  border-style: solid;
+  border-color: #CCCCFF;
+  border-with: 3px 3px 3px 3px; 
+  margin: 2px;
+  padding: 2px;
+  width: 48%;
+  float: left;
+  position: relative;
+}
+
+#conditions_container .condition_group ul
+{
+  border: none;
+  margin: 3px;
+  padding: 2px;
+}
+
+#conditions_container .condition_group ul li
+{
+  list-style:none;
+  margin-top: 1em;
+}
+
+#conditions_container .condition_group ul li a
+{
+  background: none;
+  padding: 0;
+  margin: 0;
+}
+
+#conditions_container .condition_group .condition_group_toolbar
+{
+  padding: 0.3em;
+  margin: -3px;
+  background-color: #CCCCFF;
+  border: none;
+}
+
+#conditions_container .condition_group h2,
+#conditions_container .condition_group h2 a
+{
+  font-size: 1em;
+  color: #90AD80;
+}
+
+#conditions_container .condition_group fieldset
+{
+  border: none;
+  border-top: 2px solid #CCCCFF;
+  padding-top: 1.1em;
+}
+
+#conditions_container .condition_group fieldset label
+{
+  display:block;
+  float:left !important;
+  font-weight: bolder !important;
+}
+
+#conditions_container .condition_group fieldset .sf_admin_form-row 
+{
+  margin: 3px;
+}
+
+
+#conditions_container .condition_group ul.sf_admin_actions
+{
+  float: right;
+}
+
+#conditions_container .condition_group ul.sf_admin_actions li.sf_admin_action_delete a
+{
+  background: transparent url(../images/report_criteria_delete.png) no-repeat scroll 0 0;
+  padding-left: 20px;
+}

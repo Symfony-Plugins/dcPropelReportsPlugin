@@ -1,0 +1,45 @@
+generator:
+  class: sfPropelGenerator
+  param:
+    model_class:           dcReportTable
+    theme:                 admin
+    non_verbose_templates: true
+    with_show:             false
+    singular:              ~
+    plural:                ~
+    route_prefix:          dc_report_table
+    with_propel_route:     1
+
+    config:
+      actions: ~
+      fields:  
+        propel_name: { label: Name }
+        dc_report_table_left: { label: Name }
+      list:    
+        title: Tables and relations
+        fields:
+          relation: { label: Tables and Relations }
+        batch_actions: {}
+        layout: stacked
+        display: [ _relation  ]
+        params: |
+          %%relation%%
+        actions:
+          query:
+            label: Back to query
+            action: backToQuery
+          _new:
+            label: Add table
+          _delete:
+            label: Delete last 
+        object_actions: {}
+      filter:  
+        class: false
+      form:
+        display:
+          "Left Side Table": [ dc_report_table_left, column_left ]
+          "Join Type": [ join_type ]
+          "Right Side Table": [ propel_name, alias, has_alias, column_right ]
+      edit:    ~
+      new:     
+        title: New Relation

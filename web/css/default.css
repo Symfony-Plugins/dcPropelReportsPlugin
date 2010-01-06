@@ -1,0 +1,41 @@
+#sf_admin_container ul li.sf_admin_action_tables a
+{
+  background:transparent url(../images/table.png) no-repeat scroll 0 0;
+}
+
+#sf_admin_container ul li.sf_admin_action_columns a
+{
+  background:transparent url(../images/column.png) no-repeat scroll 0 0;
+}
+
+#sf_admin_container ul li.sf_admin_action_conditions a
+{
+  background:transparent url(../images/condition.png) no-repeat scroll 0 0;
+}
+
+#sf_admin_container ul li.sf_admin_action_publish a
+{
+  background:transparent url(../images/publish.png) no-repeat scroll 0 0;
+}
+
+#sf_admin_container ul li.sf_admin_action_unpublish a
+{
+  background:transparent url(../images/unpublish.png) no-repeat scroll 0 0;
+}
+
+#sf_admin_container ul li.sf_admin_action_filters a
+{
+  background:transparent url(../images/filter.png) no-repeat scroll 0 0;
+}
+
+#sf_admin_container .sql
+{
+  background-color: #fff;
+  border-style: solid;
+  border-width: 1px 1px 0;
+  border-color: #ddd;
+  padding: 1em;
+  font-size: 0.9em;
+  font-weight: bolder;
+  color: #3c3c3c;
+}

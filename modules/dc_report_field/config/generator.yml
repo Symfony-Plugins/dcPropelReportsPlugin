@@ -1,0 +1,47 @@
+generator:
+  class: sfPropelGenerator
+  param:
+    model_class:           dcReportField
+    theme:                 admin
+    non_verbose_templates: true
+    with_show:             false
+    singular:              ~
+    plural:                ~
+    route_prefix:          dc_report_field
+    with_propel_route:     1
+
+    config:
+      actions: ~
+      fields:  
+        column_name: { label: Column }
+        group_selector: 
+          label: Group By?
+          help: ¿Group by this Column?
+      list:    
+        title: Columns Administration
+        batch_actions: {}
+        layout: stacked
+        display: [ column_name, alias, group_selector, handler, show_name ]
+        params: |
+          %%column_name%% 
+        actions:
+          query:
+            label: Back to query
+            action: backToQuery
+          _new:
+            label: Add Column
+        object_actions:
+          _edit:
+          _delete:
+      filter:  
+        class: false
+      form:
+        fields:
+          dc_report_table_id: 
+            help: Select a table for real table columns. If empty you will create a custom field
+            label: Report Table 
+        display: [ dc_report_table_id, _column, handler, alias, group_selector, show_name ]
+      edit:    ~
+      new:     ~
+        
+

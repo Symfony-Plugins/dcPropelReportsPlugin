@@ -1,0 +1,186 @@
+package: plugins.dcPropelReportsPlugin.lib.model 
+
+classes:
+  dcReportQuery:
+    tableName: dc_report_query
+    columns:
+      id:
+      name:
+        type: varchar(100)
+        required: true
+        index: unique
+      description:
+        type: longvarchar
+      database:
+        type: varchar(100);
+        required: true
+      is_published:
+        type: boolean
+        default: false
+
+  dcReportTable:
+    tableName: dc_report_table
+    columns:
+      id:
+      propel_name:
+        type: varchar(255)
+        required: true
+      alias: 
+        type: varchar(255)
+        required: true
+      dc_report_query_id:
+        type: integer
+        required: true
+        foreignTable: dc_report_query
+        foreignReference: id
+        onDelete: cascade
+        onUpdate: cascade
+      _uniques:
+        unique_table: [ dc_report_query_id, alias ]
+  
+  dcReportRelation:
+    tableName: dc_report_relation
+    columns:
+      id:
+      dc_report_table_left:
+        type: integer
+        required: true
+        foreignTable: dc_report_table
+        foreignReference: id
+        onDelete: cascade
+        onUpdate: cascade
+      dc_report_table_right:
+        type: integer
+        required: true
+        foreignTable: dc_report_table
+        foreignReference: id
+        onDelete: cascade
+        onUpdate: cascade
+      column_right:
+        type: varchar(255)
+        required: true
+      column_left:
+        type: varchar(255)
+        required: true
+      join_type:
+        description: class specified
+        type: integer
+      dc_report_query_id:
+        required: true
+        type: integer
+        foreignTable: dc_report_query
+        foreignReference: id
+        onDelete: cascade
+        onUpdate: cascade
+      
+
+  dcReportField:
+    tableName: dc_report_field
+    columns:
+      id:
+      dc_report_table_id:
+        type: integer
+        required: false
+        foreignTable: dc_report_table
+        foreignReference: id
+        onDelete: cascade
+        onUpdate: cascade
+      column:
+        type: varchar(255)
+        required: true
+      alias: 
+        type: varchar(255)
+        required: false
+      group_selector:
+        description: is this field used for group by
+        type: boolean
+        required: true
+        default: false
+      handler:
+        description: handler to apply on field NONE (0), MAX, SUM,
+        type: integer
+        required: true
+        default: 0
+      dc_report_query_id:
+        type: integer
+        foreignTable: dc_report_query
+        foreignReference: id
+        onDelete: cascade
+        onUpdate: cascade
+      show_name:
+        type: varchar(255)
+        required: false
+
+  dcReportCriteria:
+    tableName: dc_report_criteria
+    columns:
+      id:
+      dc_report_table_id:
+        type: integer
+        required: true
+        foreignTable: dc_report_table
+        foreignReference: id
+        onDelete: cascade
+        onUpdate: cascade
+      column:
+        type: varchar(255)
+        required: true
+      operation:
+        description: operation to apply on field: EQUAL, NOT EQUAL, 
+        type: integer
+        required: true
+        default: 0
+      value:
+        description: value to apply on field on operation
+        type: longvarchar
+        required: false
+      dc_report_group_criteria_id:
+        type: integer
+        foreignTable: dc_report_group_criteria
+        foreignReference: id
+        onDelete: cascade
+        onUpdate: cascade
+
+
+  dcReportGroupCriteria:
+    tableName: dc_report_group_criteria
+    columns:
+      id:
+      dc_report_query_id:
+        type: integer
+        foreignTable: dc_report_query
+        foreignReference: id
+        onDelete: cascade
+        onUpdate: cascade
+
+  dcReportFilter:
+    tableName: dc_report_filter
+    columns:
+      dc_report_query_id:
+        required: true
+        type: integer
+        foreignTable: dc_report_query
+        foreignReference: id
+        onDelete: cascade
+        onUpdate: cascade
+      dc_report_field_id:
+        required: true
+        type: integer
+        foreignTable: dc_report_field
+        foreignReference: id
+        onDelete: cascade
+        onUpdate: cascade
+      name:
+        type: varchar(100)
+        required: true
+        unique: true
+        description:  Name to display en query render
+      filter_type: 
+        description: 0 string, 1 date range, 2 object from database, 3 number range
+        type: integer 
+        required: true
+        default: 0   
+      database_table_name:  
+        description: only for filter type 2
+        type: varchar(100)
+        required: false

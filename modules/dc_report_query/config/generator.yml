@@ -1,0 +1,43 @@
+generator:
+  class: sfPropelGenerator
+  param:
+    model_class:           dcReportQuery
+    theme:                 admin
+    non_verbose_templates: true
+    with_show:             true
+    singular:              ~
+    plural:                ~
+    route_prefix:          dc_report_query
+    with_propel_route:     1
+
+    config:
+      actions: ~
+      fields:  ~
+      list:    
+        title: Report templates
+        layout:  stacked
+        display: [name]
+        params:  |
+          %%name%% <em>(%%database%%)</em><div class="dc_propel_reports_description">%%description%%</div>
+          <em>%%_publish%%</em>
+        batch_actions: {}
+        object_actions: 
+          tables:
+            label: Tables & relations
+            action: tables
+          columns:
+            action: columns
+          conditions:
+            action: conditions
+          filters:
+            label: Filters
+            action: filters
+          _edit:
+          _delete:
+      filter:  
+        class: false
+      form:    ~
+      edit:    
+        title: Edit report
+      new:     
+        title: New report

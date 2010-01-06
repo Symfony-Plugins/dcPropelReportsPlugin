@@ -1,0 +1,40 @@
+generator:
+  class: sfPropelGenerator
+  param:
+    model_class:           dcReportFilter
+    theme:                 admin
+    non_verbose_templates: true
+    with_show:             false
+    singular:              ~
+    plural:                ~
+    route_prefix:          dc_report_filter
+    with_propel_route:     1
+
+    config:
+      actions: ~
+      fields: 
+        dc_report_field_id:
+          label: Field
+        filter_type_name:
+          label: Filter Type
+
+      list:     
+        title: Filters For Report List
+        batch_actions: {}
+        display: [ dc_report_field, name, filter_type_name, database_table_name ]
+        actions:
+          query:
+            label: Back to query
+            action: backToQuery
+          _new:
+            label: Add Report Filter
+        object_actions:
+          _edit:
+          _delete:
+      filter:
+        class: false
+
+      form:
+        display: [ dc_report_field_id, name, filter_type, _table_name ]
+      edit:    ~
+      new:     ~

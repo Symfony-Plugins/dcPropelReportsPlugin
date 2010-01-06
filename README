@@ -1,0 +1,56 @@
+# dcPropelReportsPlugin #
+
+## Introduction ##
+This plugin provides a custom generation of reports in a graphical fashion, 
+allowing end users to build ang get their custom reports.
+
+
+Report creation is done by a Query by Example way, and some restrictions are 
+imposed, but it seems to be very useful in many scenarios.
+
+## Requirements ##
+  * This plugin, as its name suggest it only works with Propel Objects. 
+  * Prototype JS
+  * sfPhpExcelPlugin to export report results to Excel file.
+
+## Installation ##
+
+For report creation and administration you should enable the followoing modules:
+
+  * dc_report_query: main report administration module
+  * dc_report_table: table and relations administration for a single report
+  * dc_report_condition: condition filtering administration (Query by Example) for a single report
+  * dc_report_field: columns to be shown fo a single report
+  * dc_report_filter: filters that will be aplied to the list of report query.
+
+
+For accessing reports created you should only enable the following modules:
+
+  * dc_report_list: report renderization
+  * dc_report_public: browse published reports
+
+
+## Cofiguration ##
+The default number of rows to display in a dc_report_list module is 20. If you wanna change this number add the next parameter in your app.yml 
+
+  app_dc_report_query:
+    list_rows:     20
+
+The default number of rows to export to excel in a dc_report_list module is 20. If you wanna change this number add the next parameter in your app.yml 
+
+  app_dc_report_query:
+    export_rows:     20
+
+## Usage ##
+
+The way to access a generated report is by the following symfony route:
+
+  dc_report_list/:name:
+
+where :name: is the unique name of a report previously created
+
+
+## Authors ##
+AC. Juan Pablo Perez <jpablop@cespi.unlp.edu.ar>
+Lic. Christian A. Rodriguez <car@cespi.unlp.edu.ar>
+
