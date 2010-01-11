@@ -39,6 +39,7 @@ imposed, but it seems to be very useful in many scenarios.
    <file role="data" name="README" />
    <file role="data" name="LICENSE" />
    <file role="data" name="TODO" />
+   <file role="data" name="CHANGELOG" />
    <dir name="config">
     <file role="data" name="config.php" />
     <file role="data" name="routing.yml" />
@@ -202,5 +203,25 @@ imposed, but it seems to be very useful in many scenarios.
       * First version
     </notes>
   </release>
+
+
+  <release>
+    <version>
+      <release>0.1.1</release>
+      <api>1.2.0</api>
+    </version>
+    <stability>
+     <release>beta</release>
+     <api>beta</api>
+    </stability>
+    <license uri="http://www.symfony-project.org/license">MIT license</license>
+    <date>2010-01-06</date>
+    <license>MIT</license>
+    <notes>
+      * Fixed problem in dc_report_table module, when add first table to query
+    </notes>
+  </release>
+
+
  </changelog>
 </package>
