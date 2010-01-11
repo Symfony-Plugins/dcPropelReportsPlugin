@@ -115,6 +115,8 @@ class dcReportTableForm extends BasedcReportTableForm
 
   public function checkLeftTable($validator,&$values)
   {
+    $ltable=$this->getLeftTable(); 
+    if (is_null($ltable)) return $values;
     
     $table = null;
     $id = $values['dc_report_table_left'];
@@ -168,48 +170,62 @@ class dcReportTableForm extends BasedcReportTableForm
 
   protected function initializeRelations()
   {
-    $criteria=new Criteria();
-    $criteria->add(dcReportTablePeer::DC_REPORT_QUERY_ID, $this->getObject()->getDcReportQueryId());
-    $criteria->addAscendingOrderByColumn(dcReportTablePeer::PROPEL_NAME);
-    $this->setWidget('dc_report_table_left', new sfWidgetFormPropelChoice(array('model'=>'dcReportTable', 'criteria'=>$criteria)));
-
-    $table=$this->getLeftTable();
-
-    $this->getWidget('dc_report_table_left')->setDefault(!is_null($table)?$table->getId():null);
-
-
-    $this->getWidget('dc_report_table_left')->setAttribute('onchange',
-        remote_function(array(
-        'url'=>'dc_report_table/getColumnOptionsForTable',
-        'loading'  => "$('dc_report_table_column_left').disable()",
-        'complete' => "dc_propel_relation_update_columns_JSON(request,$('dc_report_table_column_left'));$('dc_report_table_column_left').enable()",
-        'with'=>"'table='+$(this).getValue()"
-      )));
-
-    
-    $this->setValidator('dc_report_table_left',new sfValidatorPropelChoice(
-          array(
-            'model'=>'dcReportTable',
-            'criteria' => $criteria,
-          ),
-          array(
-            'invalid' => "Left side table is not valid"
-          )
-        )
-     );
-
-
-    $this->setWidget('column_left',new sfWidgetFormChoice(array(
-      'choices'=>!is_null($table)?$this->getColumnsForTable($table->getPropelName()):array(),
-    )));
-    
-
-    
+   
     $this->setWidget('join_type',new sfWidgetFormChoice(array(
     'choices'=>dcReportRelation::getJoinTypes()
     )));
  
+    $ltable=$this->getLeftTable(); 
+    if (is_null($ltable))
+    {
+	    $this->setWidget('dc_report_table_left',new sfWidgetFormChoice(array(
+	      'choices'=>array()
+	    )));
+	    $this->setWidget('column_left',new sfWidgetFormChoice(array(
+	      'choices'=>array()
+	    )));
+	    $this->setValidator('dc_report_table_left',new sfValidatorPass());	
+	    
+            $this->getWidget('dc_report_table_left')->setAttribute('disabled',true);
+	    $this->getWidget('column_left')->setAttribute('disabled',true);
+	    $this->getWidget('join_type')->setAttribute('disabled',true);
+    }
 
+    else {
+	    $criteria=new Criteria();
+	    $criteria->add(dcReportTablePeer::DC_REPORT_QUERY_ID, $this->getObject()->getDcReportQueryId());
+	    $criteria->addAscendingOrderByColumn(dcReportTablePeer::PROPEL_NAME);
+	    $this->setWidget('dc_report_table_left', new sfWidgetFormPropelChoice(array('model'=>'dcReportTable', 'criteria'=>$criteria)));
+
+	    $table=$this->getLeftTable();
+
+	    $this->getWidget('dc_report_table_left')->setDefault(!is_null($table)?$table->getId():null);
+
+
+	    $this->getWidget('dc_report_table_left')->setAttribute('onchange',
+		remote_function(array(
+		'url'=>'dc_report_table/getColumnOptionsForTable',
+		'loading'  => "$('dc_report_table_column_left').disable()",
+		'complete' => "dc_propel_relation_update_columns_JSON(request,$('dc_report_table_column_left'));$('dc_report_table_column_left').enable()",
+		'with'=>"'table='+$(this).getValue()"
+	      )));
+
+    
+	    $this->setValidator('dc_report_table_left',new sfValidatorPropelChoice(
+		  array(
+		    'model'=>'dcReportTable',
+		    'criteria' => $criteria,
+		  ),
+		  array(
+		    'invalid' => "Left side table is not valid"
+		  )
+		)
+	     );
+	    $this->setWidget('column_left',new sfWidgetFormChoice(array(
+	      'choices'=>!is_null($table)?$this->getColumnsForTable($table->getPropelName()):array(),
+	    )));
+    
+   }
         $this->setValidator('join_type',new sfValidatorPass());
 	$this->setValidator('column_left',new sfValidatorPass());
   }

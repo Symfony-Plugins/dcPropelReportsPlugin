@@ -25,7 +25,14 @@ class dcPropelReportQueryListener
 	  	$criteria->add(dcReportTablePeer::DC_REPORT_QUERY_ID,$user->getAttribute('dc_report_query/current_report'));
 	  	$criteria->addAscendingOrderByColumn(dcReportTablePeer::ID);
     }
-  	return $criteria;
+    
+    if ($event->getSubject() instanceof autoDc_report_filterActions)  
+    { 
+	  	$user = sfContext::getInstance()->getUser();
+	  	$criteria->add(dcReportFilterPeer::DC_REPORT_QUERY_ID,$user->getAttribute('dc_report_query/current_report'));
+    }
+
+    return $criteria;
   }
   
 }

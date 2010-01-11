@@ -1,0 +1,5 @@
+Version 0.1.1
+  * Fixed problem in dc_report_table module, when add first table to query
+
+Version 0.1.0
+ * First Release
