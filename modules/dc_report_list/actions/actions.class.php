@@ -315,7 +315,7 @@ class dc_report_listActions extends sfActions
 		foreach($data_row as $key=>$value) {	
 			$wrapper = $column_wrappers[$column];
 			$wrapper->setValue($value);	
-			$objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($column, $row,$wrapper->getValue(true));
+			$objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($column, $row,$wrapper->getValue(dcPropelReportColumnWrapper::FORMAT_EXCEL));
 			$column++;
 		}
 		$row++;

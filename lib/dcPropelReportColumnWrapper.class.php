@@ -12,6 +12,9 @@ class dcPropelReportColumnWrapper
 	protected $field = null;
 	protected $value = null;
 
+	const FORMAT_HTML =  'HTML';
+	const FORMAT_EXCEL = 'EXCEL';
+
 	public function __construct($dcPropelReportFiled)
 	{
 		$this->field = 	$dcPropelReportFiled;
@@ -23,16 +26,15 @@ class dcPropelReportColumnWrapper
 		$this->value = $value;
 	}
 
-	public function getValue($emitSignal=false)
+	public function getValue($format = 'HTML')
 	{
 	    $res     = $this->value;
 	    $event = null;
-	    if ($emitSignal)
-	    {
-	      $event = $this->createEvent();                                            // Creo el evento
-	      sfContext::getInstance()->getConfiguration()->getEventDispatcher()->filter($event, $this->value);  // Levanto la señal
-	      $res   = $event->getReturnValue();                                        // Obtengo el valor modificado
-	    }
+
+            $event = $this->createEvent($format);                                            // Creo el evento
+	    sfContext::getInstance()->getConfiguration()->getEventDispatcher()->filter($event, $this->value);  // Levanto la señal
+	    $res   = $event->getReturnValue();                                        // Obtengo el valor modificado
+	    
 	    if (is_null($event) || (!$event->isProcessed() && !empty($value)))
 	    {
 	      // Si el evento no se procesó, obtengo el valor normalmente
@@ -42,11 +44,11 @@ class dcPropelReportColumnWrapper
 	}
 
 
-        protected function createEvent()
+        protected function createEvent($format)
         {
 	    return new sfEvent(
 	      $this,                                                           // Objeto que levanto la señal
-	      'dc_propel_report_query_'.$this->field->getRealColumnName(),	      // Nombre de la señal
+	      'dc_propel_report_query_'.$format.'_'.$this->field->getDcReportQuery()->getNameSlug().'_'.$this->field->getRealColumnName(),	      // Nombre de la señal
 	      array('fieldName' => $this->field->__toString())                      // Lista de parámetros
 	    );
 	}

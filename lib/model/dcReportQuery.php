@@ -128,6 +128,19 @@ class dcReportQuery extends BasedcReportQuery
   	$cri->addAscendingOrderByColumn(dcReportTablePeer::ID);
   	return dcReportTablePeer::doSelect($cri);
   }
+ 
+
+  public function getNameSlug()
+  {
+    // replace all non letters or digits by -
+    $text = preg_replace('/\W+/', '-', $this->getName());
+ 
+    // trim and lowercase
+    $text = strtolower(trim($text, '-'));
+ 
+    return $text;
+
+  }
   
   
 }
