@@ -108,13 +108,26 @@ class dc_report_listActions extends sfActions
       $this->setTestPage($request->getParameter('page'));
     }
     
-    $this->pager= $this->getPager();  
+    $this->pager = $this->getPager();  
 
     $this->export_pager= $this->getExportPager();
 
     $this->filters = new dcPropelReportFilter($this->report_query);
     $this->filters->setDefaults($this->getFilters());
     $this->sort = $this->getTestSort();
+
+    $this->column_wrappers = $this->buildColumnsWrappers();
+
+  }
+
+  protected function buildColumnsWrappers()
+  {
+	$ret = array();
+	foreach ($this->report_query->getdcReportFields() as $field)
+	{
+		$ret[] = new dcPropelReportColumnWrapper($field);
+	}
+	return $ret;
   }
 
   protected function getPager()
@@ -196,6 +209,8 @@ class dc_report_listActions extends sfActions
 
     $this->sort = $this->getTestSort();
 
+    $this->column_wrappers = $this->buildColumnsWrappers();
+
     $this->setTemplate('index');
   }
 
@@ -255,12 +270,14 @@ class dc_report_listActions extends sfActions
 			$results = $pager->getResults();
 		}
 		
-		$objWriter = new PHPExcel_Writer_Excel5($this->buildExcel($this->report_query, $results));
+		$objWriter = new PHPExcel_Writer_Excel5($this->buildExcel($this->report_query, $results, $this->column_wrappers = $this->buildColumnsWrappers()));
 		
 		$tmp_dir = '/tmp/';
 		$file_name = $tmp_dir.'export'.time().'.xls';
 		$objWriter->save($file_name);
 		$this->file = $file_name;
+
+		 
 		
 	
 	}
@@ -270,12 +287,12 @@ class dc_report_listActions extends sfActions
 	}
   }
 
-  private function buildExcel($report_query, $results)
+  private function buildExcel($report_query, $results, $column_wrappers)
   {
 	$objPHPExcel = new sfPhpExcel();
 	$objPHPExcel->setActiveSheetIndex(0);	
 	$this->writeHeader($report_query, $objPHPExcel);
-	$this->writeRows($report_query,$results, $objPHPExcel);
+	$this->writeRows($report_query,$results, $objPHPExcel, $column_wrappers);
 	return $objPHPExcel;
   }
 
@@ -290,13 +307,15 @@ class dc_report_listActions extends sfActions
 	}
   }
 
-  private function writeRows($report_query, $results, $objPHPExcel)
+  private function writeRows($report_query, $results, $objPHPExcel, $column_wrappers)
   {
 	$row    = 2;
 	foreach ($results as $data_row) {
 		$column = 0;		
-		foreach($data_row as $key=>$value) {		
-			$objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($column, $row,$value);
+		foreach($data_row as $key=>$value) {	
+			$wrapper = $column_wrappers[$column];
+			$wrapper->setValue($value);	
+			$objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($column, $row,$wrapper->getValue(true));
 			$column++;
 		}
 		$row++;

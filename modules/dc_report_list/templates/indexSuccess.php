@@ -16,7 +16,8 @@
     <?php include_partial('dc_report_list/result', array('pager' => $pager, 
                                                          'export_pager' => $export_pager, 
                                                          'dc_report_query'=>$report_query,
-                                                         'sort' => $sort)) ?>
+                                                         'sort' => $sort,
+                                                         'column_wrappers' => $column_wrappers)) ?>
   </div>
 
 

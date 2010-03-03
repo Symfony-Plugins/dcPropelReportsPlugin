@@ -26,7 +26,7 @@
         <?php $i=0?>
         <?php foreach ($pager->getResults() as $key => $row): $odd = fmod(++$i, 2) ? 'odd' : 'even' ?>
           <tr class="sf_admin_row <?php echo $odd ?>">
-            <?php include_partial('dc_report_list/result_row', array('row' => $row)) ?>
+            <?php include_partial('dc_report_list/result_row', array('row' => $row,'column_wrappers'=> $column_wrappers)) ?>
           </tr>
         <?php endforeach; ?>
       </tbody>
