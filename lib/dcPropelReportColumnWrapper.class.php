@@ -46,7 +46,7 @@ class dcPropelReportColumnWrapper
         {
 	    return new sfEvent(
 	      $this,                                                           // Objeto que levanto la señal
-	      'dc_propel_report_query_'.$this->field->__toString(),	      // Nombre de la señal
+	      'dc_propel_report_query_'.$this->field->getRealColumnName(),	      // Nombre de la señal
 	      array('fieldName' => $this->field->__toString())                      // Lista de parámetros
 	    );
 	}
