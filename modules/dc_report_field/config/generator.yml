@@ -13,17 +13,15 @@ generator:
     config:
       actions: ~
       fields:  
-        column_name: { label: Column }
+        dc_report_table: { label: Table }
+        column_name: { label: Summary }
         group_selector: 
           label: Group By?
           help: ¿Group by this Column?
       list:    
         title: Columns Administration
         batch_actions: {}
-        layout: stacked
-        display: [ column_name, alias, group_selector, handler, show_name ]
-        params: |
-          %%column_name%% 
+        display: [ column_position, dc_report_table, column, alias, group_selector, handler_name, show_name, display_in_results, _column_name ]
         actions:
           query:
             label: Back to query
@@ -40,8 +38,10 @@ generator:
           dc_report_table_id: 
             help: Select a table for real table columns. If empty you will create a custom field
             label: Report Table 
-        display: [ dc_report_table_id, _column, handler, alias, group_selector, show_name ]
-      edit:    ~
-      new:     ~
+        display: [ dc_report_table_id, _column, handler, alias, group_selector, show_name, display_in_results, column_position ]
+      edit:    
+        title: Edit select fields
+      new:  
+        title: Edit select fields
         
 

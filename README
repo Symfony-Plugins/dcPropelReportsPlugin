@@ -29,6 +29,10 @@ For accessing reports created you should only enable the following modules:
   * dc_report_list: report renderization
   * dc_report_public: browse published reports
 
+You can change the form filter widgets used for filtering dates with:
+  * dc_report_filter_date_widget_class: defaults to sfWidgetFormDate
+  * dc_report_filter_date_validator_class: defaults to sfValidatorDate
+
 
 ## Cofiguration ##
 The default number of rows to display in a dc_report_list module is 20. If you wanna change this number add the next parameter in your app.yml 
@@ -40,6 +44,10 @@ The default number of rows to export to excel in a dc_report_list module is 20. 
 
   app_dc_report_query:
     export_rows:     20
+
+To customize xls format you can change the following parameters in your app.yml
+    app_xls_font_size: 9
+    app_xls_font_name: Arial
 
 ## Usage ##
 

@@ -12,5 +12,7 @@ class dcReportGroupCriteriaForm extends BasedcReportGroupCriteriaForm
 {
   public function configure()
   {
+    if ( isset($this['created_at']) ) unset($this['created_at']);
+    if ( isset($this['updated_at']) ) unset($this['updated_at']);
   }
 }

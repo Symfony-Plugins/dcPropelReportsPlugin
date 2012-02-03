@@ -1,13 +1,9 @@
-<?php use_helper('Javascript')?>
+<?php use_helper('JavascriptBase')?>
 <div id="conditions_toolbar">
-<?php echo link_to_remote(image_tag('/dcPropelReportsPlugin/images/group_criteria_add').' '.__('Add a new condition box'),
-        array(
-          'url'=>'dc_report_condition/addEmptyGroupCriteria',
-          'update'=>"conditions_container",
-          'position'=>'bottom',
-    )); ?>
+<?php echo link_to_function(image_tag('/dcPropelReportsPlugin/images/group_criteria_add').' '.__('Add a new condition box'),
+        sprintf("new Ajax.Updater('conditions_container','%s',{insertion: 'bottom'})", url_for('dc_report_condition/addEmptyGroupCriteria'))) ?>
 <?php echo link_to(image_tag('/sfPropelPlugin/images/default').' '.__('Back to query'),
-          'dc_report_condition/backToQuery'); ?>
+          'dc_report_condition/backToQuery',array('confirm' => 'Are you sure?')); ?>
 <?php echo link_to(image_tag('/dcPropelReportsPlugin/images/group_criteria_add').' '.__('Save'),
           'dc_report_condition/save',array('method'=>'post')); ?>
 <div class="help"><?php echo __("Conditional boxes will be joined with logical OR")?>

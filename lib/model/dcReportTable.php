@@ -20,6 +20,12 @@ class dcReportTable extends BasedcReportTable
       return $tmap->getColumns();
   }
 
+  public function getColumn($name)
+  {
+    $tmap=dcPropelReflector::getTableMap($this->getPropelName(),$this->getdcReportQuery()->getDatabase());
+    return $tmap->getColumn($name);
+  }
+
   public function getRelation()
   {
     $rels=$this->getdcReportRelationsRelatedByDcReportTableLeft();

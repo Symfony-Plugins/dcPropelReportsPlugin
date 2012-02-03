@@ -14,6 +14,9 @@ classes:
       database:
         type: varchar(100);
         required: true
+      credentials:
+        type: varchar(255);
+        required: false
       is_published:
         type: boolean
         default: false
@@ -110,6 +113,11 @@ classes:
       show_name:
         type: varchar(255)
         required: false
+      display_in_results:
+        type: boolean
+        default: 1
+      column_position:
+        type: integer
 
   dcReportCriteria:
     tableName: dc_report_criteria
@@ -163,13 +171,16 @@ classes:
         foreignReference: id
         onDelete: cascade
         onUpdate: cascade
-      dc_report_field_id:
-        required: true
+      dc_report_table_id:
         type: integer
-        foreignTable: dc_report_field
+        required: false
+        foreignTable: dc_report_table
         foreignReference: id
         onDelete: cascade
         onUpdate: cascade
+      column:
+        type: varchar(255)
+        required: true
       name:
         type: varchar(100)
         required: true

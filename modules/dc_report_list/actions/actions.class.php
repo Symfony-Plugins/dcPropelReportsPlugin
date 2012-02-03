@@ -43,7 +43,7 @@ class dc_report_listActions extends sfActions
 
       $column = dcReportFieldPeer::retrieveByPk($sort[0]);
       if (is_null($column)) return;
-      $column=$column->getRealColumnName($this->report_query->getDatabase());
+      $column=$column->getColumnNameForCriteria();
       if ('asc' == $sort[1])
       {
         $criteria->addAscendingOrderByColumn($column);
@@ -241,7 +241,6 @@ class dc_report_listActions extends sfActions
 		return sfView::ERROR;
 	}
 
-	$export_all_rows = $request->getParameter('export_all',false);
 	$export_page = $request->getParameter('export_page',1);
 
 	$criteria = $this->report_query->getCriteria(); 
@@ -257,29 +256,21 @@ class dc_report_listActions extends sfActions
 		
 		$resp = $this->getResponse();
 		$resp->setHttpHeader('Content-type', 'application/x-excel; charset=UTF-8');
-		$resp->setHttpHeader('Content-Disposition', ' attachment; filename="export-'.$this->report_query->getName().'.xls"');
+		$resp->setHttpHeader('Content-Disposition', ' attachment; filename="export - '.$this->report_query->getName().'.xls"');
 		$resp->setHttpHeader('Cache-Control', ' maxage=3600');
 		$resp->setHttpHeader('Pragma', 'public');
 	
-		if ($export_all_rows)
-			$results = dcPropelReportPeer::doSelect($criteria,$this->report_query->getDatabase());	
-		else {
-			$pager = $this->getExportPager();
-			$pager->setPage($export_page);
-			$pager->init();
-			$results = $pager->getResults();
-		}
+    
+    $pager = $this->getExportPager();
+    $pager->setPage($export_page);
+    $pager->init();
+    $results = $pager->getResults();
 		
 		$objWriter = new PHPExcel_Writer_Excel5($this->buildExcel($this->report_query, $results, $this->column_wrappers = $this->buildColumnsWrappers()));
-		
 		$tmp_dir = '/tmp/';
 		$file_name = $tmp_dir.'export'.time().'.xls';
 		$objWriter->save($file_name);
 		$this->file = $file_name;
-
-		 
-		
-	
 	}
 	catch(Exception $e) {
 		die($e->getMessage());
@@ -291,22 +282,69 @@ class dc_report_listActions extends sfActions
   {
 	$objPHPExcel = new sfPhpExcel();
 	$objPHPExcel->setActiveSheetIndex(0);	
+  $this->applyDefaultSheetStyle($objPHPExcel->getActiveSheet());
 	$this->writeHeader($report_query, $objPHPExcel);
 	$this->writeRows($report_query,$results, $objPHPExcel, $column_wrappers);
 	return $objPHPExcel;
+  }
+
+
+  private function buildGeneralFormat()
+  {
+    return array(
+        'borders' => array(
+            'top'     => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+            'bottom'  => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+            'left'    => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+            'right'   => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+        ),
+        'alignment'  => array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT),
+    );
+  }
+
+  protected function buildHeaderFormat()
+  {
+    return array_merge(
+          array(
+          'font'      => array(
+                'bold'       => true,
+          ),
+          'alignment' => array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER),
+                'borders' => array(
+                    'top'     => array('style' => PHPExcel_Style_Border::BORDER_MEDIUM),
+                    'bottom'  => array('style' => PHPExcel_Style_Border::BORDER_MEDIUM),
+                    'left'    => array('style' => PHPExcel_Style_Border::BORDER_MEDIUM),
+                    'right'   => array('style' => PHPExcel_Style_Border::BORDER_MEDIUM),
+                )),                                                                                           
+                $this->buildGeneralFormat());
+ }
+
+  private function applyDefaultSheetStyle($sheet)
+  {
+    $sheet->getDefaultStyle()->getFont()->setSize(sfConfig::get('app_xls_font_size', 9));
+    $sheet->getDefaultStyle()->getFont()->setName(sfConfig::get('app_xls_font_name', 'Arial'));
+    $sheet->getPageSetup()->setPaperSize(PHPExcel_Worksheet_PageSetup::PAPERSIZE_LETTER);
+    $sheet->getPageSetup()->setPaperSize(PHPExcel_Worksheet_PageSetup::PAPERSIZE_LETTER);
+    $sheet->getPageSetup()->setOrientation(sfConfig::get('app_xls_orientation_landscape')? PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE : PHPExcel_Worksheet_PageSetup::ORIENTATION_PORTRAIT);
+    $sheet->getPageSetup()->setFitToWidth(true);
+    $sheet->getPageSetup()->setFitToHeight(false);
+    $sheet->getPageSetup()->setHorizontalCentered(true);
+    $sheet->getPageMargins()->setTop(sfConfig::get('app_xls_top_margin'));
+    $sheet->getPageMargins()->setRight(sfConfig::get('app_xls_right_margin'));
+    $sheet->getPageMargins()->setBottom(sfConfig::get('app_xls_bottom_margin'));
+    $sheet->getPageMargins()->setLeft(sfConfig::get('app_xls_left_margin'));
   }
 
   private function writeHeader($report_query, $objPHPExcel)
   {
 	$column = 0;
 	$row    = 1;
-	foreach ($report_query->getdcReportFields() as $field) {
-		$objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($column,$row, $field->__toString()	);
-		$objPHPExcel->getActiveSheet()->getColumnDimension($column)->setAutoSize(true);
-		$column++;
-	}
+      foreach ($report_query->getdcReportFields() as $field) {
+        $objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($column,$row, $field->__toString()	);
+        $objPHPExcel->getActiveSheet()->getStyleByColumnAndRow($column, $row)->applyFromArray($this->buildHeaderFormat());
+        $column++;
+      }
   }
-
   private function writeRows($report_query, $results, $objPHPExcel, $column_wrappers)
   {
 	$row    = 2;
@@ -316,6 +354,7 @@ class dc_report_listActions extends sfActions
 			$wrapper = $column_wrappers[$column];
 			$wrapper->setValue($value);	
 			$objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($column, $row,$wrapper->getValue(dcPropelReportColumnWrapper::FORMAT_EXCEL));
+      $objPHPExcel->getActiveSheet()->getStyleByColumnAndRow($column, $row)->applyFromArray($this->buildGeneralFormat());
 			$column++;
 		}
 		$row++;

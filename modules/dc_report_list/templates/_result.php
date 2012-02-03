@@ -2,6 +2,12 @@
   <?php if (!$pager->getNbResults()): ?>
     <p><?php echo __('No result', array(), 'sf_admin') ?></p>
   <?php else: ?>
+    <?php if (class_exists('sfPhpExcel')): ?>
+    <?php include_partial('dc_report_list/export_to_excel', array(
+                                'dc_report_query' => $dc_report_query,
+                                'pager'=>$export_pager)) ?>
+    <?php endif;?>
+
     <table cellspacing="0">
       <thead>
         <tr>
@@ -10,7 +16,7 @@
       </thead>
       <tfoot>
         <tr>
-          <th colspan="<?php echo count($dc_report_query->getdcReportFields())?>">
+          <th colspan="<?php echo count($dc_report_query->getdcReportFieldsToDisplay())?>">
             <?php if ($pager->haveToPaginate()): ?>
               <?php include_partial('dc_report_list/result_pagination', array('pager' => $pager)) ?>
             <?php endif; ?>
@@ -26,14 +32,15 @@
         <?php $i=0?>
         <?php foreach ($pager->getResults() as $key => $row): $odd = fmod(++$i, 2) ? 'odd' : 'even' ?>
           <tr class="sf_admin_row <?php echo $odd ?>">
-            <?php include_partial('dc_report_list/result_row', array('row' => $row,'column_wrappers'=> $column_wrappers)) ?>
+            <?php include_partial('dc_report_list/result_row', array('row' => $row,'column_wrappers'=> $column_wrappers, 'fields_definition' => $dc_report_query->getdcReportFieldsOrdered())) ?>
           </tr>
         <?php endforeach; ?>
       </tbody>
     </table>
 <?php if (class_exists('sfPhpExcel')): ?>
-	<?php include_partial('dc_report_list/export_to_excel', array('dc_report_query' => $dc_report_query,
-                              					       'pager'=>$export_pager)) ?>
+<?php include_partial('dc_report_list/export_to_excel', array(
+                            'dc_report_query' => $dc_report_query,
+                            'pager'=>$export_pager)) ?>
 <?php endif;?>
 
   <?php endif; ?>

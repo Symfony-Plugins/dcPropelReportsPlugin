@@ -12,19 +12,25 @@ class dcReportFilterForm extends BasedcReportFilterForm
 {
   public function configure()
   {
+    if ( isset($this['created_at']) ) unset($this['created_at']);
+    if ( isset($this['updated_at']) ) unset($this['updated_at']);
  	$this->setWidget('dc_report_query_id',new sfWidgetFormInputHidden());
 	$this->setWidget('filter_type',new sfWidgetFormChoice(array(
 	    	'choices'=>dcReportFilter::getFilterTypes()
 	    )));
 
-	sfContext::getInstance()->getConfiguration()->loadHelpers(array('Url','Javascript'));
+	sfContext::getInstance()->getConfiguration()->loadHelpers(array('Url'));
 
 	$this->getWidget('filter_type')->setAttribute('onchange',
-		remote_function(array(
-		'url'=>'dc_report_filter/typeChange?dc_report_query_id='.$this->getObject()->getDcReportQueryId(),
-		'update'   => "table_name",
-		'with'=>"'type='+$(this).getValue()"
-	)));
+      strtr("new Ajax.Updater('%id_to_update%','%url%',
+            {
+                parameters: %params% 
+            })",
+        array(
+		        '%url%'           => url_for('dc_report_filter/typeChange?dc_report_query_id='.$this->getObject()->getDcReportQueryId()),
+		        '%id_to_update%'  => "table_name",
+		        '%params%'        => "'type='+$(this).getValue()"
+	      )));
 
 	if ( $this->getObject()->getFilterType() != dcReportFilter::FILTER_TYPE_DATABASE_OBJECT )
 	{
@@ -37,22 +43,37 @@ class dcReportFilterForm extends BasedcReportFilterForm
 	    ));
 	}
 
-	$criteria=new Criteria();
-	$criteria->add(dcReportFieldPeer::DC_REPORT_QUERY_ID, $this->getObject()->getDcReportQueryId());
+  $this->getWidget('dc_report_table_id')->setAttribute('onchange',
+        strtr("new Ajax.Updater('%id_to_update%','%url%',
+            {
+                parameters: %params% 
+            })",
+            array(
+                '%url%'           => url_for('dc_report_filter/tableChange?dc_report_query_id='.$this->getObject()->getDcReportQueryId()),
+                '%id_to_update%'  => "column",
+                '%params%'        => "'table='+$(this).getValue()"
+            )));
 
-	$this->setWidget('dc_report_field_id', 
-			 new sfWidgetFormPropelChoice(array('model'=>'dcReportField','criteria'=>$criteria
-                                                     ) 
-                                                )
-                         );
+        $this->setWidget('column',new sfWidgetFormChoice(array(
+          'choices'=>self::getColumns($this->getObject()->getDcReportTable())
+        )));
 
 	$this->setValidator('filter_type',new sfValidatorChoice(array(
 		'choices'=>array_keys(dcReportFilter::getFilterTypes()),
 	)));
 
-	$this->setValidator('dc_report_field_id',new sfValidatorPropelChoice(array(
-		'model'=>'dcReportField','criteria'=>$criteria
-	),array('invalid'=>'Field not valid')));
+  }
+
+  public static function getColumns($table)
+  {
+    if ( empty($table) ) return array();
+    $ret=array();
+    foreach($table->getColumns() as $col)
+    {
+      $ret[$col->getColumnName()]=$col->getColumnName();
+    }
+    asort($ret);
+    return $ret;
   }
 
 

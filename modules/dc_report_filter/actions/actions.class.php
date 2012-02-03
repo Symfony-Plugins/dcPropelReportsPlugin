@@ -41,4 +41,15 @@ class dc_report_filterActions extends autoDc_report_filterActions
  		$this->form = $form;
   }
 
+  public function executeTableChange($request)
+  {
+  		$dc_report_query_id = $request->getParameter('dc_report_query_id');
+  		$table = $request->getParameter('table');
+  		$filter  = new dcReportFilter();
+  		$filter->setDcReportQueryId($dc_report_query_id);
+  		$filter->setDcReportTableId(($table=="")?null:$table);
+  		$form = new dcReportFilterForm($filter);
+ 		  $this->form = $form;
+  }
+
 }

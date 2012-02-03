@@ -133,7 +133,7 @@ class dc_report_conditionActions extends sfActions
       { 
         $group_criteria=$co->group_criteria;
         $this->form= new dcReportCriteriaForm($group_criteria->getNewReportCriteria());  
-        $this->form->bind($request->getParameter("dc_report_criteria[$id]"),$request->getFiles("dc_report_criteria[$id]"));
+        $this->form->bind($request->getParameter("dc_report_criteria_${id}_"),$request->getFiles("dc_report_criteria_${id}_"));
         if ($this->form->isValid())
         {
           $this->form->updateObject();

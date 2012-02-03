@@ -1,5 +1,5 @@
 <?php slot('sf_admin.current_header') ?>
-<?php foreach ($dc_report_query->getdcReportFields() as $field): ?>
+<?php foreach ($dc_report_query->getdcReportFieldsToDisplay() as $field): ?>
 
 <th class="sf_admin_text">
   <?php $column=$field->__toString()?>

@@ -10,8 +10,9 @@ class dcPropelReflector
   /* Returns the database map for specified name */
   public static function getDatabaseMap($name='propel')
   {
-    self::loadMapBuilders();
-    return Propel::getDatabaseMap($name);
+    $dbMap = Propel::getDatabaseMap($name);
+    self::loadMapBuilders($dbMap);
+    return $dbMap;
   }
 
   /* Returns every tablemaps for this project */
@@ -23,20 +24,16 @@ class dcPropelReflector
 
   /* Loads every Object Mapping so we can inspect 
    */
-  private static function loadMapBuilders()
+  private static function loadMapBuilders(DatabaseMap $dbMap)
   {
-    $files = sfFinder::type('file')->name('*MapBuilder.php')->in(sfProjectConfiguration::getActive()->getModelDirs());
+    $files = sfFinder::type('file')->name('*TableMap.php')->in(sfProjectConfiguration::getActive()->getModelDirs());
     foreach ($files as $file)
     {
-      $omClass = basename($file, 'MapBuilder.php');
+      $omClass = basename($file, 'TableMap.php');
       if (class_exists($omClass) && is_subclass_of($omClass, 'BaseObject'))
       {
-        $mapBuilderClass = basename($file, '.php');
-        $map = new $mapBuilderClass();
-        if (!$map->isBuilt())
-        {
-          $map->doBuild();
-        }
+        $mapClass = basename($file, '.php');
+        $dbMap->addTableFromMapClass( $mapClass );
       }
     }
   }

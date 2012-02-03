@@ -70,7 +70,7 @@ class dcReportField extends BasedcReportField
 		return $this->getRealColumnName($this->getDcReportQuery()->getDatabase());
 	}
 	
-	public function getColumnName()
+	public function getColumnNameAsHTML()
 	{
 		$ret = $this->addHandler($this->getRealColumnName($this->getDcReportQuery()->getDatabase()));
 		if (!is_null($alias = $this->getAlias()) && (!empty($alias)))
@@ -106,6 +106,12 @@ class dcReportField extends BasedcReportField
 		}
 		
 	}
+
+  public function getHandlerName()
+  {
+    $h = self::getHandlerTypes();
+    return $h[$this->getHandler()];
+  }
 	
 	public function hasHandler()
 	{

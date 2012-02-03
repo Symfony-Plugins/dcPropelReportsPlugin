@@ -12,14 +12,14 @@ class dc_report_filterGeneratorConfiguration extends BaseDc_report_filterGenerat
 {
 
 
-  public function getForm($object = null)
+  public function getForm($object = null, $options = array())
   {
     if (is_null($object))
     {
       $object=new dcReportFilter();
     }
     $object->setDcReportQueryId(sfContext::getInstance()->getUser()->getAttribute('dc_report_query/current_report'));
-    return parent::getForm($object);
+    return parent::getForm($object, $options);
   }
 
 

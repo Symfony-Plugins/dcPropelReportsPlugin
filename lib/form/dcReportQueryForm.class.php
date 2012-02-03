@@ -12,6 +12,8 @@ class dcReportQueryForm extends BasedcReportQueryForm
 {
   public function configure()
   {
+    if ( isset($this['created_at']) ) unset($this['created_at']);
+    if ( isset($this['updated_at']) ) unset($this['updated_at']);
     unset($this['is_published']);
     $this->setWidget('database',new sfWidgetFormChoice(array(
       'choices'=>$this->getConnectionNames()

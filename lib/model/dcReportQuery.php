@@ -23,8 +23,8 @@ class dcReportQuery extends BasedcReportQuery
 		$c = new Criteria();
 		$c->setDbName($this->getDatabase());
 		$this->addSelectColumns($c);
-		$this->addConditions($c);
 		$this->addRelations($c);
+		$this->addConditions($c);
 		return $c;
 	}
 	
@@ -36,7 +36,9 @@ class dcReportQuery extends BasedcReportQuery
 
 	protected function addSelectColumns (Criteria $c)
 	{
-		$columns = $this->getdcReportFields();
+    $criteria= new Criteria();
+    $criteria->addAscendingOrderByColumn(dcReportFieldPeer::COLUMN_POSITION);
+		$columns = $this->getdcReportFields($criteria);
 		foreach ($columns as $column)
 		{
 			$column->build($c);
@@ -129,6 +131,20 @@ class dcReportQuery extends BasedcReportQuery
   	return dcReportTablePeer::doSelect($cri);
   }
  
+  public function getdcReportFieldsToDisplay()
+  {
+    $criteria= new Criteria();
+    $criteria->addAscendingOrderByColumn(dcReportFieldPeer::COLUMN_POSITION);
+    $criteria->add(dcReportFieldPeer::DISPLAY_IN_RESULTS, 1);
+		return $this->getdcReportFields($criteria);
+  }
+
+  public function getdcReportFieldsOrdered()
+  {
+    $criteria= new Criteria();
+    $criteria->addAscendingOrderByColumn(dcReportFieldPeer::COLUMN_POSITION);
+		return $this->getdcReportFields($criteria);
+  }
 
   public function getNameSlug()
   {

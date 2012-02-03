@@ -12,8 +12,9 @@ class dcReportTableForm extends BasedcReportTableForm
 {
   public function configure()
   {
-    sfContext::getInstance()->getConfiguration()->loadHelpers(array('Url','Javascript'));
-
+    if ( isset($this['created_at']) ) unset($this['created_at']);
+    if ( isset($this['updated_at']) ) unset($this['updated_at']);
+    sfContext::getInstance()->getConfiguration()->loadHelpers(array('Url'));
   	$this->setWidget('dc_report_query_id',new sfWidgetFormInputHidden());
 
     $this->setWidget('has_alias', new sfWidgetFormInputCheckbox(array(),array(
@@ -39,6 +40,7 @@ class dcReportTableForm extends BasedcReportTableForm
     
 
     $this->initializeRelations();
+
     $this->getValidatorSchema()->setPostValidator(new sfValidatorAnd(
       array(
         new sfValidatorCallback(array(
@@ -72,12 +74,16 @@ class dcReportTableForm extends BasedcReportTableForm
     if (!is_null($ltable))
     {
       $this->getWidget('propel_name')->setAttribute('onchange',
-        remote_function(array(
-        'url'=>'dc_report_table/getColumnOptionsForTable',
-        'loading'  => "$('dc_report_table_column_right').disable()",
-        'complete' => "dc_propel_relation_update_columns_JSON(request,$('dc_report_table_column_right'));$('dc_report_table_column_right').enable()",
-        'with'=>"'table='+$(this).getValue()"
-      )));
+          "new Ajax.Request('". url_for('dc_report_table/getColumnOptionsForTable')."',
+            {
+                onLoading: function () { 
+                    $('dc_report_table_column_right').disable(); 
+                },
+                onComplete: function (request) { 
+                    dc_propel_relation_update_columns_JSON(request,$('dc_report_table_column_right'));$('dc_report_table_column_right').enable();
+                },
+                parameters: 'table='+$(this).getValue()
+            })");
     }
     else
     {
@@ -86,7 +92,7 @@ class dcReportTableForm extends BasedcReportTableForm
 
   }
 
-  public function checkColumnRight($validator, &$values)
+  public function checkColumnRight($validator, $values)
   {
     $ltable=$this->getLeftTable(); 
     if (!empty($ltable)&&!empty($values['propel_name'])&&!array_key_exists($values['column_right'],$this->getColumnsForTable($values['propel_name'])))
@@ -96,7 +102,7 @@ class dcReportTableForm extends BasedcReportTableForm
     return $values;
   }
 
-  public function checkAlias($validator,&$values)
+  public function checkAlias($validator,$values)
   {
     if (!is_null($values['has_alias']) && empty($values['alias']))
     {
@@ -113,7 +119,7 @@ class dcReportTableForm extends BasedcReportTableForm
     return $values;
   }
 
-  public function checkLeftTable($validator,&$values)
+  public function checkLeftTable($validator,$values)
   {
     $ltable=$this->getLeftTable(); 
     if (is_null($ltable)) return $values;
@@ -203,12 +209,16 @@ class dcReportTableForm extends BasedcReportTableForm
 
 
 	    $this->getWidget('dc_report_table_left')->setAttribute('onchange',
-		remote_function(array(
-		'url'=>'dc_report_table/getColumnOptionsForTable',
-		'loading'  => "$('dc_report_table_column_left').disable()",
-		'complete' => "dc_propel_relation_update_columns_JSON(request,$('dc_report_table_column_left'));$('dc_report_table_column_left').enable()",
-		'with'=>"'table='+$(this).getValue()"
-	      )));
+          "new Ajax.Request('". url_for('dc_report_table/getColumnOptionsForTable')."',
+            {
+                onLoading: function () { 
+                    $('dc_report_table_column_left').disable(); 
+                },
+                onComplete: function (request) { 
+                    dc_propel_relation_update_columns_JSON(request,$('dc_report_table_column_left'));$('dc_report_table_column_left').enable();
+                },
+                parameters: 'table='+$(this).getValue()
+            })");
 
     
 	    $this->setValidator('dc_report_table_left',new sfValidatorPropelChoice(
@@ -232,8 +242,6 @@ class dcReportTableForm extends BasedcReportTableForm
 
   public function getLeftTable()
   {
-
-
     $dc_rel=$this->getObject()->getRelation();
     if (is_null($dc_rel))
     {

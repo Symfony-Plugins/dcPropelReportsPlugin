@@ -31,11 +31,12 @@ class dcReportFilter extends BasedcReportFilter
 			case dcReportFilter::FILTER_TYPE_STRING :
 				 return new sfWidgetFormFilterInput();
 			case dcReportFilter::FILTER_TYPE_DATE_RANGE:
-				return new sfWidgetFormFilterDate(array('from_date'=>new sfWidgetFormDate(), 'to_date'=>new sfWidgetFormDate()));
+        $widget_class=sfConfig::get('app_dc_report_filter_date_widget_class','sfWidgetFormDate');
+				return new sfWidgetFormFilterDate(array('from_date'=>new $widget_class(), 'to_date'=>new $widget_class(), 'with_empty' => false));
 			case dcReportFilter::FILTER_TYPE_DATABASE_OBJECT:
 				return new sfWidgetFormPropelChoice(array('model' => dcPropelReflector::getClassNameForTable($this->getDatabaseTableName(),$this->getdcReportQuery()->getDatabase()), 'add_empty' => true));
 			case dcReportFilter::FILTER_TYPE_NUMBER_RANGE :
-				return new dcWidgetFormFilterNumber(array('from_number' => new sfWidgetFormInput(), 'to_number' => new sfWidgetFormInput(), 'with_empty' => true));
+				return new dcWidgetFormFilterNumber(array('from_number' => new sfWidgetFormInput(), 'to_number' => new sfWidgetFormInput(), 'with_empty' => false));
 			default:
 				throw new Exception('Filter not defined');
 		}
@@ -49,7 +50,8 @@ class dcReportFilter extends BasedcReportFilter
 			case dcReportFilter::FILTER_TYPE_STRING :
 				 return new sfValidatorPass(array('required' => false));
 			case dcReportFilter::FILTER_TYPE_DATE_RANGE:
-				return new sfValidatorDateRange(array('required' => false, 'from_date' => new sfValidatorDate(array('required' => false)), 'to_date' => new sfValidatorDate(array('required' => false))));
+        $validator_class = sfConfig::get('app_dc_report_filter_date_validator_class','sfValidatorDate');
+				return new sfValidatorDateRange(array('required' => false, 'from_date' => new $validator_class(array('required' => false)), 'to_date' => new $validator_class(array('required' => false))));
 			case dcReportFilter::FILTER_TYPE_DATABASE_OBJECT:
 				return new sfValidatorPropelChoice(array('required' => false, 'model' => dcPropelReflector::getClassNameForTable($this->getDatabaseTableName(),$this->getdcReportQuery()->getDatabase()), 'column' => 'id'));
 			case dcReportFilter::FILTER_TYPE_NUMBER_RANGE :
@@ -81,7 +83,7 @@ class dcReportFilter extends BasedcReportFilter
 
 	protected function getCriterionForTypeString(Criteria $criteria, $values)
 	{
-	    $colname = $this->getdcReportField()->getColumnNameForCriteria();
+	    $colname = $this->getdcReportField();
 	    $criterion = null;
 	    if (is_array($values) && isset($values['is_empty']) && $values['is_empty'])
 	    {
@@ -99,7 +101,7 @@ class dcReportFilter extends BasedcReportFilter
 
 	  protected function getCriterionForTypeDateRange(Criteria $criteria, $values)
 	  {
-	    $colname = $this->getdcReportField()->getColumnNameForCriteria();
+	    $colname = $this->getdcReportField();
 	  
             $criterion = null;
 	    if (isset($values['is_empty']) && $values['is_empty'])
@@ -128,7 +130,7 @@ class dcReportFilter extends BasedcReportFilter
 
 	   protected function getCriterionForTypeNumberRange(Criteria $criteria, $values)
 	  {
-	    $colname = $this->getdcReportField()->getColumnNameForCriteria();
+	    $colname = $this->getdcReportField();
             $criterion = null;
 	    if (isset($values['is_empty']) && $values['is_empty'])
 	    {
@@ -156,29 +158,28 @@ class dcReportFilter extends BasedcReportFilter
 
 	  protected function getCriterionForTypeDatabaseColumn(Criteria $criteria, $value)
 	  {
-	    $colname = $this->getdcReportField()->getColumnNameForCriteria();
-            $criterion = null;
+	    $colname = $this->getdcReportField();
+      $criterion = null;
 	    if (is_array($value))
 	    {
 	      $values = $value;
 	      $value = array_pop($values);
 	      $criterion = $criteria->getNewCriterion($colname, $value);
-
 	      foreach ($values as $value)
 	      {
-		$criterion->addOr($criteria->getNewCriterion($colname, $value));
+      		$criterion->addOr($criteria->getNewCriterion($colname, $value));
 	      }
 	    }
 	    else
 	    {
-		$criterion = $criteria->getNewCriterion($colname, $value);	      
+		    $criterion = $criteria->getNewCriterion($colname, $value);	      
 	    }
 	    return $criterion;
-
 	  }
 
-	  public function isComplexFilter()
-	  {
-		return ($this->getdcReportField()->hasHandler());
-	  }
+  private function getdcReportField()
+  {
+    return $this->getdcReportTable()->getColumn($this->getColumn())->getFullyQualifiedName();
+  }
+
 }

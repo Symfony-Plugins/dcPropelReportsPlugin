@@ -21,18 +21,21 @@
         
 <?php  foreach ($form as $name => $field): ?>
 
-  <tr class="sf_admin_form_row sf_admin_str sf_admin_filter_field_<?php echo $name; ?>">
-    <td>
-      <?php echo $form[$name]->renderLabel() ?>
-    </td>
-    <td>
-      <?php echo $form[$name]->renderError() ?>
-      <?php echo $form[$name]->render() ?>
-    </td>
-  </tr>
+    <?php if ( !$form[$name]->isHidden() ): ?>
+      <tr class="sf_admin_form_row sf_admin_str sf_admin_filter_field_<?php echo $name; ?>">
+        <td>
+          <?php echo $form[$name]->renderLabel() ?>
+        </td>
+        <td>
+          <?php echo $form[$name]->renderError() ?>
+          <?php echo $form[$name]->render() ?>
+        </td>
+      </tr>
+    <?php endif?>
 <?php endforeach; ?>
 
       </tbody>
+        <?php echo $form->renderHiddenFields() ?>
     </table>
   </form>
 </div>

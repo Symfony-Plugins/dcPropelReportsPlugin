@@ -11,14 +11,14 @@
 class dc_report_fieldGeneratorConfiguration extends BaseDc_report_fieldGeneratorConfiguration
 {
 
-  public function getForm($object = null)
+  public function getForm($object = null, $options = array())
   {
     if (is_null($object))
     {
       $object=new dcReportField();
     }
     $object->setDcReportQueryId(sfContext::getInstance()->getUser()->getAttribute('dc_report_query/current_report'));
-    return parent::getForm($object);
+    return parent::getForm($object, $options);
   }
   
 }

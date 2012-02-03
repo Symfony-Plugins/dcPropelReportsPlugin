@@ -1,5 +1,8 @@
-* Credentials for accessing dc_report_list individual for each dc_report_query
-* Export to other formats
+* no funciona el orden por un group by u otro handler
+* no permite agergar filtros para campos que no existen en el select
+* permitir definir las credenciales por reporte
+
 * Check restricted actions under (un)publish states:
   - dc_report_list: only when published
   - Every action that may alter query, can be done only in unpublished state
+

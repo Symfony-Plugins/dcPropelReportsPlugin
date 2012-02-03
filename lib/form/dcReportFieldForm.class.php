@@ -12,15 +12,21 @@ class dcReportFieldForm extends BasedcReportFieldForm
 {
   public function configure()
   {
-  		sfContext::getInstance()->getConfiguration()->loadHelpers(array('Url','Javascript'));
+    if ( isset($this['created_at']) ) unset($this['created_at']);
+    if ( isset($this['updated_at']) ) unset($this['updated_at']);
+  		sfContext::getInstance()->getConfiguration()->loadHelpers(array('Url'));
   		 
   		$this->setWidget('dc_report_query_id',new sfWidgetFormInputHidden());
-  		$this->getWidget('dc_report_table_id')->setAttribute('onchange',
-	      remote_function(array(
-	      'url'=>'dc_report_field/tableChange?dc_report_query_id='.$this->getObject()->getDcReportQueryId(),
-		  'update'   => "column",
-	      'with'=>"'table='+$(this).getValue()"
-	    )));
+      $this->getWidget('dc_report_table_id')->setAttribute('onchange', 
+        strtr("new Ajax.Updater('%id_to_update%','%url%',
+            {
+                parameters: %params% 
+            })",
+            array(
+                '%url%'           => url_for('dc_report_field/tableChange?dc_report_query_id='.$this->getObject()->getDcReportQueryId()),
+                '%id_to_update%'  => "column",
+                '%params%'        => "'table='+$(this).getValue()"
+            )));
 	    
 	    if (is_null($this->getObject()->getDcReportTableId()))
 	    {
@@ -66,7 +72,7 @@ class dcReportFieldForm extends BasedcReportFieldForm
     return $ret;
   }
   
-  public function checkAlias($validator,&$values)
+  public function checkAlias($validator,$values)
   {
     if (is_null($values['dc_report_table_id']) || empty($values['dc_report_table_id']) || ($values['handler'] != dcReportField::HANDLER_NONE))
     {
