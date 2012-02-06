@@ -10,6 +10,19 @@
  */
 class dc_report_listActions extends sfActions
 {
+
+
+    public function getCredential()
+    {
+      $rq = $this->getReportQuery();
+      if ( is_null ($rq))
+      {
+        return NULL;
+      }
+      return $rq->getCredentials();
+    }
+
+
     protected function setTestSort($sort)
     {
       if (!is_null($sort[0]) && is_null($sort[1]))
@@ -339,7 +352,7 @@ class dc_report_listActions extends sfActions
   {
 	$column = 0;
 	$row    = 1;
-      foreach ($report_query->getdcReportFields() as $field) {
+      foreach ($report_query->getdcReportFieldsToDisplay() as $field) {
         $objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($column,$row, $field->__toString()	);
         $objPHPExcel->getActiveSheet()->getStyleByColumnAndRow($column, $row)->applyFromArray($this->buildHeaderFormat());
         $column++;
@@ -348,14 +361,18 @@ class dc_report_listActions extends sfActions
   private function writeRows($report_query, $results, $objPHPExcel, $column_wrappers)
   {
 	$row    = 2;
+  $fields = $report_query->getdcReportFieldsOrdered();
 	foreach ($results as $data_row) {
 		$column = 0;		
 		foreach($data_row as $key=>$value) {	
-			$wrapper = $column_wrappers[$column];
-			$wrapper->setValue($value);	
-			$objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($column, $row,$wrapper->getValue(dcPropelReportColumnWrapper::FORMAT_EXCEL));
-      $objPHPExcel->getActiveSheet()->getStyleByColumnAndRow($column, $row)->applyFromArray($this->buildGeneralFormat());
-			$column++;
+      if ($fields[$key]->getDisplayInResults())
+      {
+        $wrapper = $column_wrappers[$column];
+        $wrapper->setValue($value);	
+        $objPHPExcel->getActiveSheet()->setCellValueByColumnAndRow($column, $row,$wrapper->getValue(dcPropelReportColumnWrapper::FORMAT_EXCEL));
+        $objPHPExcel->getActiveSheet()->getStyleByColumnAndRow($column, $row)->applyFromArray($this->buildGeneralFormat());
+        $column++;
+      }
 		}
 		$row++;
 	}

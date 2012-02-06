@@ -32,7 +32,8 @@ class dcReportFilter extends BasedcReportFilter
 				 return new sfWidgetFormFilterInput();
 			case dcReportFilter::FILTER_TYPE_DATE_RANGE:
         $widget_class=sfConfig::get('app_dc_report_filter_date_widget_class','sfWidgetFormDate');
-				return new sfWidgetFormFilterDate(array('from_date'=>new $widget_class(), 'to_date'=>new $widget_class(), 'with_empty' => false));
+        $date_options = array("format"=>"%day%/%month%/%year%");
+				return new sfWidgetFormFilterDate(array('from_date'=>new $widget_class($date_options), 'to_date'=>new $widget_class($date_options), 'with_empty' => false));
 			case dcReportFilter::FILTER_TYPE_DATABASE_OBJECT:
 				return new sfWidgetFormPropelChoice(array('model' => dcPropelReflector::getClassNameForTable($this->getDatabaseTableName(),$this->getdcReportQuery()->getDatabase()), 'add_empty' => true));
 			case dcReportFilter::FILTER_TYPE_NUMBER_RANGE :

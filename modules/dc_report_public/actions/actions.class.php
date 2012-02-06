@@ -16,20 +16,14 @@ class dc_report_publicActions extends autoDc_report_publicActions
 
     public function buildCriteria()
     {
-	$criteria = parent::buildCriteria();
-	$criteria->add(dcReportQueryPeer::IS_PUBLISHED,true);
-	return $criteria;
+      $criteria = parent::buildCriteria();
+      $criteria->add(dcReportQueryPeer::IS_PUBLISHED,true);
+      return $criteria;
     }
 
-     private function setCurrentReportQuery()
+    public function executeBrowseResults(sfWebRequest $request)
     {
-      $rquery=$this->getRoute()->getObject();
-      if (is_null($rquery))
-      {
-        $this->getUser()->setFlash('error','Error accessing tables');
-        $this->redirect('@dc_report_query');
-      }
-      $this->getUser()->setAttribute('dc_report_query/current_report',$rquery->getId());
-    }
-    
+      $dc_report_query = $this->getRoute()->getObject();
+      $this->redirect("dc_report_query/test?id=".$dc_report_query->getId());
+    } 
 }

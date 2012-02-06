@@ -14,16 +14,17 @@ generator:
       actions: ~
       fields:  ~
       list:    
-        title: Published Reports
-        layout:  stacked
+        title: Reports
+        max_per_page: 100
         display: [name]
-        params:  |
-          %%name%% <div class="dc_propel_reports_description">%%description%%</div>
         batch_actions: {}
-        object_actions: ~ 
+        object_actions: 
+          browse: 
+            action: browseResults
+            title: Browse results
         actions:  []
       filter:  
-        display:            [name, description]
+        class: false
       form:
         display: [] 
       edit:    

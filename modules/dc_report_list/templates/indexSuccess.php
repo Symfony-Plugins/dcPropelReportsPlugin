@@ -4,7 +4,7 @@
 <?php use_stylesheet('/dcPropelReportsPlugin/css/default.css', 'first') ?>
 
 <div id="sf_admin_container">
-  <h1><?php echo __('Test Report:', array(), 'messages').' '.$report_query->getName() ?></h1>
+  <h1><?php echo $report_query->getName() ?></h1>
 
     <?php if ( $report_query->countdcReportFilters() > 0 ): ?>
         <?php include_partial('dc_report_list/filters', array('form' => $filters, 'dc_report_query'=>$report_query)) ?>

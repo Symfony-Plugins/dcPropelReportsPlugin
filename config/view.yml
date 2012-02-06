@@ -1,2 +1,2 @@
-default:
+all:
   javascripts: [ /dcPropelReportsPlugin/js/prototype.js ]
