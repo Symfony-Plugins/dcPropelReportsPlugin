@@ -14,7 +14,7 @@ generator:
       actions: ~
       fields:  
         credentials: 
-          help: Specify required credential needed for this report. If there are more than one credential write them between braces [ ] separated by coma (,)
+          help: Specify required credential needed for this report
       list:    
         title: Report templates
         layout:  stacked
