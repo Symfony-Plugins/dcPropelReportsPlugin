@@ -104,5 +104,12 @@ class dcReportFieldForm extends BasedcReportFieldForm
 
     return $values;
   }
-
+  
+  public function getJavaScripts()
+  {
+    return array_merge(
+      parent::getJavaScripts(),
+      array('/dcPropelReportsPlugin/js/prototype.js')
+    );
+  }
 } 

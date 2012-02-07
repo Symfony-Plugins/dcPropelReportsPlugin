@@ -2,6 +2,7 @@
 <?php use_stylesheet('/sfPropelPlugin/css/global.css', 'first') ?>
 <?php use_stylesheet('/sfPropelPlugin/css/default.css', 'first') ?>
 <?php use_stylesheet('/dcPropelReportsPlugin/css/condition.css', 'first') ?>
+<?php use_javascript('/dcPropelReportsPlugin/js/prototype.js') ?>
 <?php use_javascript('/dcPropelReportsPlugin/js/dc_propel_table.js') ?>
 <div id="sf_admin_container">
   <h1><?php echo __('Manage conditions', array(), 'messages') ?></h1>

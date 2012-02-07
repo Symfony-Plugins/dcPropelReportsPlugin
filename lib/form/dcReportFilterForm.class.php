@@ -95,5 +95,13 @@ class dcReportFilterForm extends BasedcReportFilterForm
   {
     return $this->getObject()->getDcReportQuery()->getDatabase();
   }
+  
+  public function getJavaScripts()
+  {
+    return array_merge(
+      parent::getJavaScripts(),
+      array('/dcPropelReportsPlugin/js/prototype.js')
+    );
+  }
 
 }

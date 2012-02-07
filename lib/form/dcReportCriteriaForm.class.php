@@ -52,7 +52,10 @@ class dcReportCriteriaForm extends BasedcReportCriteriaForm
 
   public function getJavaScripts()
   {
-    return array('/dcPropelReportsPlugin/js/dc_propel_table.js');
+    return array_merge(
+      parent::getJavaScripts(),
+      array('/dcPropelReportsPlugin/js/prototype.js', '/dcPropelReportsPlugin/js/dc_propel_table.js')
+    );
   }
 
 

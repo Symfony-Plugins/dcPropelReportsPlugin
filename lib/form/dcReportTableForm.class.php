@@ -150,11 +150,6 @@ class dcReportTableForm extends BasedcReportTableForm
     return $values;
   }
 
-  public function getJavaScripts()
-  {
-    return array('/dcPropelReportsPlugin/js/dc_propel_table.js');
-  }
-
   protected function getTables()
   {
     $ret=array();
@@ -281,7 +276,11 @@ class dcReportTableForm extends BasedcReportTableForm
     }
   }
 
-
-  
-
+  public function getJavaScripts()
+  {
+    return array_merge(
+      parent::getJavaScripts(),
+      array('/dcPropelReportsPlugin/js/prototype.js', '/dcPropelReportsPlugin/js/dc_propel_table.js')
+    );
+  }
 }

@@ -15,4 +15,12 @@ class dcReportRelationForm extends BasedcReportRelationForm
     if ( isset($this['created_at']) ) unset($this['created_at']);
     if ( isset($this['updated_at']) ) unset($this['updated_at']);
   }
+  
+  public function getJavaScripts()
+  {
+    return array_merge(
+      parent::getJavaScripts(),
+      array('/dcPropelReportsPlugin/js/prototype.js')
+    );
+  }
 }
