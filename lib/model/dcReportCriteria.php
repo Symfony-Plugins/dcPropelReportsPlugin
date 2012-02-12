@@ -110,7 +110,7 @@ class dcReportCriteria extends BasedcReportCriteria
 			case dcReportCriteria::OPERATION_IN:
 				 return Criteria::IN;
 			case dcReportCriteria::OPERATION_NOTIN:
-				 return Criteria::NOTIN;
+				 return Criteria::NOT_IN;
    		default:
 				throw new Exception('Operation not defined');
 		}
